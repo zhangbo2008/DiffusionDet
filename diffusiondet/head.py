@@ -229,7 +229,7 @@ class RCNNHead(nn.Module):
         self.bboxes_delta = nn.Linear(d_model, 4)
         self.scale_clamp = scale_clamp
         self.bbox_weights = bbox_weights
-
+#================核心代码!!!!!!!!!!!!!
     def forward(self, features, bboxes, pro_features, pooler, time_emb):
         """
         :param bboxes: (N, nr_boxes, 4)
@@ -238,7 +238,7 @@ class RCNNHead(nn.Module):
 
         N, nr_boxes = bboxes.shape[:2]
         
-        # roi_feature.
+        # roi_feature. #预选集.
         proposal_boxes = list()
         for b in range(N):
             proposal_boxes.append(Boxes(bboxes[b]))
@@ -276,9 +276,9 @@ class RCNNHead(nn.Module):
         cls_feature = fc_feature.clone()
         reg_feature = fc_feature.clone()
         for cls_layer in self.cls_module:
-            cls_feature = cls_layer(cls_feature)
+            cls_feature = cls_layer(cls_feature)#得到分类的特征
         for reg_layer in self.reg_module:
-            reg_feature = reg_layer(reg_feature)
+            reg_feature = reg_layer(reg_feature)#得到回归的特征.
         class_logits = self.class_logits(cls_feature)
         bboxes_deltas = self.bboxes_delta(reg_feature)
         pred_bboxes = self.apply_deltas(bboxes_deltas, bboxes.view(-1, 4))

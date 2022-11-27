@@ -267,7 +267,7 @@ class SetCriterionDynamicK(nn.Module):
 
         return losses
 
-
+#匈牙利匹配算法, 用来计算目标box和得到的box之间如何匹配.
 class HungarianMatcherDynamicK(nn.Module):
     """This class computes an assignment between the targets and the predictions of the network
     For efficiency reasons, the targets don't include the no_object. Because of this, in general,

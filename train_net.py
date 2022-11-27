@@ -52,11 +52,11 @@ class Trainer(DefaultTrainer):
         cfg = DefaultTrainer.auto_scale_workers(cfg, comm.get_world_size())
 
         # Assume these objects must be constructed in this order.
-        model = self.build_model(cfg)
+        model = self.build_model(cfg) #创建encoder模型
         optimizer = self.build_optimizer(cfg, model)
         data_loader = self.build_train_loader(cfg)
 
-        model = create_ddp_model(model, broadcast_buffers=False)
+        model = create_ddp_model(model, broadcast_buffers=False)   
         self._trainer = (AMPTrainer if cfg.SOLVER.AMP.ENABLED else SimpleTrainer)(
             model, data_loader, optimizer
         )
